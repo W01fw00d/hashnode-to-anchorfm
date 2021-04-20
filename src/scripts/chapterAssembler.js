@@ -1,5 +1,9 @@
 module.exports = (blogCode, postCode, lang) => {
-  const { readFile, readFolder } = require("./fileSystemOperator");
+  const {
+    readFile,
+    readFolder,
+    writeJSONFile,
+  } = require("./fileSystemOperator");
   const { replaceAll, getTextArrayFormatted } = require("./textManipulator");
   const { isOdd } = require("./mathUtils");
   const generateVoiceFile = require("./voiceGenerator");
@@ -20,11 +24,30 @@ module.exports = (blogCode, postCode, lang) => {
 
   const blogDataFilename = `${INPUT_FOLDER}/${blogCode}/${blogCode}.${JSON_EXTENSION}`;
   readFile(blogDataFilename, (blogJsonData) => {
-    const { blogName } = JSON.parse(blogJsonData);
+    const { blogName, gtts, songs } = JSON.parse(blogJsonData);
 
     const postDataFilename = `${INPUT_FOLDER}/${blogCode}/${postCode}.${JSON_EXTENSION}`;
     readFile(postDataFilename, (jsonData) => {
-      const { code } = JSON.parse(jsonData);
+      const { code, textPost, repository, illustration } = JSON.parse(jsonData);
+
+      let outputJSON = {
+        title: "",
+        //TODO: refactor this into an HTMLGenerator.js
+        description:
+          `<p><a href=\"${textPost}"><strong>${blogName}</strong></a></p>` +
+          (repository
+            ? `<p><a href=\"${repository}"><strong>GitHub repository</strong></a></p>`
+            : "") +
+          `<p><a href=\"${gtts}"><strong>Voice from Google Text-to-Speech</strong></a></p>` +
+          (songs
+            ? `<p><strong>Songs</strong>:</p>` +
+              `<p>- <a href=\"${songs.attribution}\"><strong>Attribution</strong></a></p>` +
+              `<p>- <strong>License</strong>${songs.license}</p>`
+            : "") +
+          (illustration
+            ? `<p><a href=\"${illustration}"><strong>Cover image attribution</strong></a></p>`
+            : ""),
+      };
 
       const filename = code;
       readFile(`${BACKUP_FOLDER}/${filename}.${MD_EXTENSION}`, (text) => {
@@ -47,8 +70,8 @@ module.exports = (blogCode, postCode, lang) => {
             let segmentsFilenames = [openingSong];
 
             const formattedTextArray = getTextArrayFormatted(
-              `## ${blogName}\r\r${text}`
-            ).reduce((accumulator, item) => {
+              `${DELIMITERS.TITLE} ${blogName}\r\r${text}`
+            ).reduce((accumulator, item, index) => {
               if (item.trim().length > 0) {
                 let voice = VOICES.NARRATOR;
                 const length = item.length;
@@ -59,17 +82,29 @@ module.exports = (blogCode, postCode, lang) => {
                   length > word.length &&
                   item.substring(0, word.length) === word;
 
-                if (firstLetter === "*" || startsWith(DELIMITERS.TITLE)) {
+                if (
+                  firstLetter === DELIMITERS.NOTE ||
+                  startsWith(DELIMITERS.TITLE)
+                ) {
                   voice = VOICES.INTRO;
-                  item = replaceAll(item, "#", "");
+                  item = replaceAll(
+                    replaceAll(item, DELIMITERS.TITLE, ""),
+                    DELIMITERS.NOTE,
+                    ""
+                  ).trim();
+
+                  const titleIndex = 2;
+                  if (index === titleIndex) {
+                    outputJSON.title = item;
+                  }
                 } else if (
-                  firstLetter === "-" ||
+                  firstLetter === DELIMITERS.DIALOGUE ||
                   dialogueStartDelimiter.test(item)
                 ) {
                   voice = VOICES.DIALOGUE;
                 }
 
-                const subSegmentArray = item.split("-");
+                const subSegmentArray = item.split(DELIMITERS.DIALOGUE);
 
                 subSegmentArray.forEach((subSegmentItem, index) => {
                   if (subSegmentItem.trim().length > 0) {
@@ -97,13 +132,17 @@ module.exports = (blogCode, postCode, lang) => {
                   iterate();
                 } else {
                   // End of iteration
-                  segmentsFilenames.push(closureSong);
+                  const outputPath = `${OUTPUT_FOLDER}/${blogCode}/${blogCode}-${postCode}`;
 
-                  combineVoiceFiles(
-                    blogCode,
-                    segmentsFilenames,
-                    `${OUTPUT_FOLDER}/${blogCode}/${blogCode}-${postCode}.${AUDIO_EXTENSION}`
-                  );
+                  writeJSONFile(outputPath, outputJSON, () => {
+                    segmentsFilenames.push(closureSong);
+
+                    combineVoiceFiles(
+                      blogCode,
+                      segmentsFilenames,
+                      `${outputPath}.${AUDIO_EXTENSION}`
+                    );
+                  });
                 }
               };
 

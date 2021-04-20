@@ -38,6 +38,8 @@ module.exports = {
     }[lang || "en"]),
   DELIMITERS: {
     GIF: "%[",
-    TITLE: "##",
+    TITLE: "#",
+    NOTE: "*",
+    DIALOGUE: "-",
   },
 };
