@@ -9,24 +9,14 @@ module.exports = (blogCode, postCode, lang) => {
   const generateVoiceFile = require("./voiceGenerator");
   const combineVoiceFiles = require("./audioFilesCombinator");
 
-  const {
-    JSON_EXTENSION,
-    MD_EXTENSION,
-    INPUT_FOLDER,
-    BACKUP_FOLDER,
-    SONGS_FOLDER,
-    OUTPUT_FOLDER,
-    AUDIO_EXTENSION,
-    getVoices,
-    DELIMITERS,
-  } = require("./constants");
+  const { EXTENSION, FOLDER, getVoices, DELIMITERS } = require("./constants");
   let VOICES = getVoices(lang);
 
-  const blogDataFilename = `${INPUT_FOLDER}/${blogCode}/${blogCode}.${JSON_EXTENSION}`;
+  const blogDataFilename = `${FOLDER.INPUT}/${blogCode}/${blogCode}.${EXTENSION.JSON}`;
   readFile(blogDataFilename, (blogJsonData) => {
     const { blogName, gtts, songs } = JSON.parse(blogJsonData);
 
-    const postDataFilename = `${INPUT_FOLDER}/${blogCode}/${postCode}.${JSON_EXTENSION}`;
+    const postDataFilename = `${FOLDER.INPUT}/${blogCode}/${postCode}.${EXTENSION.JSON}`;
     readFile(postDataFilename, (jsonData) => {
       const { code, textPost, repository, illustration } = JSON.parse(jsonData);
 
@@ -50,10 +40,10 @@ module.exports = (blogCode, postCode, lang) => {
       };
 
       const filename = code;
-      readFile(`${BACKUP_FOLDER}/${filename}.${MD_EXTENSION}`, (text) => {
+      readFile(`${FOLDER.BACKUP}/${filename}.${EXTENSION.MD}`, (text) => {
         console.log(`${filename} read succesfully.`);
 
-        const getSongsPath = (name) => `${SONGS_FOLDER}/${blogCode}/${name}/`;
+        const getSongsPath = (name) => `${FOLDER.SONGS}/${blogCode}/${name}/`;
         const openingSongsPath = getSongsPath("opening");
         const closureSongsPath = getSongsPath("closure");
 
@@ -132,7 +122,7 @@ module.exports = (blogCode, postCode, lang) => {
                   iterate();
                 } else {
                   // End of iteration
-                  const outputPath = `${OUTPUT_FOLDER}/${blogCode}/${blogCode}-${postCode}`;
+                  const outputPath = `${FOLDER.OUTPUT}/${blogCode}/${blogCode}-${postCode}`;
 
                   writeJSONFile(outputPath, outputJSON, () => {
                     segmentsFilenames.push(closureSong);
@@ -140,7 +130,7 @@ module.exports = (blogCode, postCode, lang) => {
                     combineVoiceFiles(
                       blogCode,
                       segmentsFilenames,
-                      `${outputPath}.${AUDIO_EXTENSION}`
+                      `${outputPath}.${EXTENSION.AUDIO}`
                     );
                   });
                 }
@@ -148,7 +138,7 @@ module.exports = (blogCode, postCode, lang) => {
 
               const segment = formattedTextArray[formattedTextIndex];
               const segmentFilename = `${filename}_${formattedTextIndex}`;
-              const segmentFilePath = `${OUTPUT_FOLDER}/${segmentFilename}.${AUDIO_EXTENSION}`;
+              const segmentFilePath = `${FOLDER.OUTPUT}/${segmentFilename}.${EXTENSION.AUDIO}`;
 
               segmentsFilenames.push(segmentFilePath);
 

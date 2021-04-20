@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { UTF_8, JSON_EXTENSION } = require("./constants");
+const { UTF_8, EXTENSION } = require("./constants");
 
 const writeFile = (path, data, callback) => {
   fs.writeFile(path, data, UTF_8, (error, text) => {
@@ -34,7 +34,7 @@ exports.readFolder = (path, callback) => {
 exports.writeJSONFile = (path, data, callback) => {
   const whiteSpaceInsertion = 2;
   writeFile(
-    `${path}.${JSON_EXTENSION}`,
+    `${path}.${EXTENSION.JSON}`,
     JSON.stringify(data, null, whiteSpaceInsertion),
     callback
   );
