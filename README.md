@@ -1,22 +1,11 @@
-# Hasnode to Anchor.fm - An automation tool to publish your podcast
+# Hasnode to Anchor.fm - An automation tool to transform your blog into audio and publish it as a podcast
+
+[Blog post about this project](https://thenursewhocoded.hashnode.dev/how-to-transform-your-blog-into-a-podcast-for-free)
+[Audio version](https://anchor.fm/gabriel-romaymachado/episodes/How-to-transform-your-blog-into-a-podcast-for-free-evavgb)
 
 This action will upload an audio file from a given youtube video automatically to your Anchor.fm account.
 
 ## How it works
-
-## How can I use it?
-
-# Credits
-
-[Forked repo](https://github.com/Schrodinger-Hat/youtube-to-anchorfm): [@thejoin](https://github.com/thejoin95) & [@wabri](https://github.com/wabri)
-
-Code for gtts by @W01fw00d from https://github.com/W01fw00d/text-to-voice
-
-Hasnode management by @W01fw00d
-
-# License
-
-MIT
 
 # Transform text doc to voice audio file
 
@@ -73,6 +62,17 @@ ffmpeg -i src/input/test1/songs/opening.mp3 -i src/output/test1/test1_cap1_0_0.m
 -y -filter_complex concat=n=73:v=0:a=1 src/output/test1/test1_cap1.mp3
 ```
 
-| **Attribution:**
+
+# Credits
+
+- [Forked repo](https://github.com/Schrodinger-Hat/youtube-to-anchorfm): [@thejoin](https://github.com/thejoin95) & [@wabri](https://github.com/wabri)
+
+- Code for gtts by @W01fw00d from https://github.com/W01fw00d/text-to-voice
+
+- Hasnode management by @W01fw00d
 
 - `test1` opening and closure songs were created by @W01fw00d
+
+# License
+
+MIT
