@@ -1,5 +1,4 @@
 const SOURCE_FOLDER = "src";
-const INPUT_FOLDER = SOURCE_FOLDER + "/input";
 
 // Spanish compatible
 const SPAIN_SPANISH = "es-es";
@@ -10,17 +9,27 @@ const ITALIAN = "it";
 // English compatible
 const GB_ENGLISH = "en";
 const AMERICAN_ENGLISH = "en-us";
-const AUTRALIAN_ENGLISH = "en-au";
+const AUSTRALIAN_ENGLISH = "en-au";
 
 module.exports = {
-  INPUT_FOLDER,
-  BACKUP_FOLDER: "../thenursewhocoded",
-  OUTPUT_FOLDER: `${SOURCE_FOLDER}/output`,
-  SONGS_FOLDER: "../songs",
+  FOLDER: {
+    INPUT: `${SOURCE_FOLDER}/input`,
+    BACKUP: "../thenursewhocoded",
+    OUTPUT: `${SOURCE_FOLDER}/output`,
+    SONGS: "../songs",
+  },
+  EXTENSION: {
+    AUDIO: "mp3",
+    JSON: "json",
+    MD: "md",
+  },
+  DELIMITERS: {
+    GIF: "%[",
+    TITLE: "#",
+    NOTE: "*",
+    DIALOGUE: "-",
+  },
 
-  AUDIO_EXTENSION: "mp3",
-  JSON_EXTENSION: "json",
-  MD_EXTENSION: "md",
   UTF_8: "utf8",
 
   getVoices: (lang) =>
@@ -31,15 +40,9 @@ module.exports = {
         DIALOGUE: AMERICAN_SPANISH,
       },
       en: {
-        INTRO: AUTRALIAN_ENGLISH,
+        INTRO: AUSTRALIAN_ENGLISH,
         NARRATOR: GB_ENGLISH,
         DIALOGUE: AMERICAN_ENGLISH,
       },
     }[lang || "en"]),
-  DELIMITERS: {
-    GIF: "%[",
-    TITLE: "#",
-    NOTE: "*",
-    DIALOGUE: "-",
-  },
 };

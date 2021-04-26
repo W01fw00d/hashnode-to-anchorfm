@@ -2,10 +2,10 @@ module.exports = (bookCode, filenames, outputFilename) => {
   const ffmpeg = require("fluent-ffmpeg");
 
   const { deleteFile } = require("./fileSystemOperator");
-  const { OUTPUT_FOLDER } = require("./constants");
+  const { FOLDER } = require("./constants");
 
   const FFMPEG_TEMP_FOLDER = "ffmpeg_temp";
-  const TEMP_FOLDER = `${OUTPUT_FOLDER}/${bookCode}/${FFMPEG_TEMP_FOLDER}`;
+  const TEMP_FOLDER = `${FOLDER.OUTPUT}/${bookCode}/${FFMPEG_TEMP_FOLDER}`;
 
   const ffmpegInstanceWithInputs = filenames.reduce(
     (accumulator, filename) => accumulator.input(filename),
