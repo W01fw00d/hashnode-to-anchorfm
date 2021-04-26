@@ -9,7 +9,7 @@ const ITALIAN = "it";
 // English compatible
 const GB_ENGLISH = "en";
 const AMERICAN_ENGLISH = "en-us";
-const AUTRALIAN_ENGLISH = "en-au";
+const AUSTRALIAN_ENGLISH = "en-au";
 
 module.exports = {
   FOLDER: {
@@ -40,7 +40,7 @@ module.exports = {
         DIALOGUE: AMERICAN_SPANISH,
       },
       en: {
-        INTRO: AUTRALIAN_ENGLISH,
+        INTRO: AUSTRALIAN_ENGLISH,
         NARRATOR: GB_ENGLISH,
         DIALOGUE: AMERICAN_ENGLISH,
       },
