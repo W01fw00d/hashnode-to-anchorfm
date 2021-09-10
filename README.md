@@ -1,4 +1,6 @@
-# Hasnode to Anchor.fm - An automation tool to transform your blog into audio and publish it as a podcast
+# Hasnode to Anchor.fm
+
+An automation tool to transform your blog into audio and publish it as a podcast
 
 [Blog post about this project](https://thenursewhocoded.hashnode.dev/how-to-transform-your-blog-into-a-podcast-for-free)
 
@@ -7,6 +9,16 @@
 This action will upload an audio file from a given youtube video automatically to your Anchor.fm account.
 
 ## How it works
+
+</br>
+
+<div align="center">
+  <img width="55" src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/javascript.svg"/>
+  <img width="55" src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/puppeteer.svg"/>
+  <img width="55" src="https://raw.githubusercontent.com/gilbarbara/logos/master/logos/puppet.svg"/>
+</div>
+
+</br>
 
 # Transform text doc to voice audio file
 
